@@ -39,10 +39,10 @@ func isReportSafe(levels []string) bool {
 	return true
 }
 
-func partOne(report []string) {
+func partOne(reports []string) {
 	safeReports := 0
 
-	for _, report := range report {
+	for _, report := range reports {
 		levels := strings.Split(report, " ")
 
 		if isReportSafe(levels){
@@ -51,6 +51,28 @@ func partOne(report []string) {
 	}
 
 	fmt.Println("Safe Reports:", safeReports)
+}
+
+func partTwo(reports []string) {
+	safeReports := 0
+
+	for _, report := range reports {
+		levels := strings.Split(report, " ")
+
+		for idx := range levels {
+			newLevels := make([]string, len(levels) - 1)
+
+			copy(newLevels, levels[:idx])
+			copy(newLevels[idx:], levels[idx+1:])
+
+			if isReportSafe(newLevels){
+				safeReports++
+				break
+			}
+		}
+	}
+
+	fmt.Println("Dampened Safe Reports:", safeReports)
 }
 
 func main() {
@@ -63,5 +85,7 @@ func main() {
 	catch(err)
 
 	reports := strings.Split(string(file), "\n")
+
 	partOne(reports)
+	partTwo(reports)
 }
