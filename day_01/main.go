@@ -43,7 +43,22 @@ func partOne(list1 []int, list2 []int) {
 		distance += int(math.Abs(float64(list1[idx] - list2[idx])))
 	}
 
-	fmt.Println(distance)
+	fmt.Println("Distance:", distance)
+}
+
+func partTwo(list1 []int, list2 []int) {
+	similarityScore := 0
+	freq := make(map[int]int)
+
+	for _, i := range list2 {
+		freq[i]++
+	}
+
+	for _, i := range list1 {
+		similarityScore += i * freq[i];
+	}
+
+	fmt.Println("Similarity Score:", similarityScore)
 }
 
 func main() {
@@ -59,4 +74,5 @@ func main() {
 	list1, list2 := parseInput(lines)
 
 	partOne(list1, list2)
+	partTwo(list1, list2)
 }
