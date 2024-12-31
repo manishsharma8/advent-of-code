@@ -51,6 +51,31 @@ func partOne(grid [][]rune) {
 	fmt.Println("XMAS Count:", count)
 }
 
+func partTwo(grid [][]rune) {
+	count := 0
+	combination := []string{"MMSS", "SSMM", "MSSM", "SMMS"}
+
+	for r, row := range grid {
+		for c, cell := range row {
+			if cell != 'A' {
+				continue
+			}
+
+			if r == 0 || r == len(grid) - 1 || c == 0 || c == len(row) - 1 {
+				continue
+			}
+
+			for _, comb := range combination {
+				if byte(grid[r - 1][c - 1]) == comb[0] && byte(grid[r - 1][c + 1]) == comb[1] && byte(grid[r + 1][c + 1]) == comb[2] && byte(grid[r + 1][c - 1]) == comb[3] {
+					count++
+					break;
+				}
+			}
+		}
+	}
+	fmt.Println(count)
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Printf("Please provide an input file")
@@ -68,4 +93,5 @@ func main() {
 	}
 
 	partOne(runeGrid)
+	partTwo(runeGrid)
 }
