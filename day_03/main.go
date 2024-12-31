@@ -9,6 +9,7 @@ import (
 )
 
 const mulRegex = `(mul)\(\d{1,3},\d{1,3}\)`
+const enableMulRegex = `(do)\(\)|(don't)\(\)|(mul)\(\d{1,3},\d{1,3}\)`
 
 func catch(err error) {
 	if err != nil {
@@ -36,6 +37,28 @@ func partOne(input string) {
 	fmt.Println("Multiplication Sum:", sum)
 }
 
+func partTwo(input string) {
+	var sum int
+
+	mulRegexp, _ := regexp.Compile(enableMulRegex)
+	matches := mulRegexp.FindAllString(input, -1)
+
+	isEnabled := true
+
+	for _, match := range matches {
+		if match == "do()" {
+			isEnabled = true
+		} else if match == "don't()" {
+			isEnabled = false
+		} else if isEnabled {
+			values := strings.Split(match[4:len(match)-1], ",")
+			sum += atoi(values[0]) * atoi(values[1])
+		}
+	}
+
+	fmt.Println("Enabled Multiplication Sum:", sum)
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Printf("Please provide an input file")
@@ -46,4 +69,5 @@ func main() {
 	catch(err)
 
 	partOne(string(file))
+	partTwo(string(file))
 }
