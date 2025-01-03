@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -80,7 +81,23 @@ func partOne(rules map[[2]int]bool, packets [][]int) {
 		}
 	}
 
-	fmt.Println("Middle page number sum for ordered updates", middleSum)
+	fmt.Println("Sum (ordered updates)", middleSum)
+}
+
+func partTwo(rules map[[2]int]bool, packets [][]int) {
+	middleSum := 0
+
+	for _, packet := range packets {
+		if !isOrdered(packet, rules) {
+			sort.Slice(packet, func(i, j int) bool {
+				key, exist := rules[[2]int{packet[i], packet[j]}]
+				return exist && !key
+			})
+			middleSum += packet[len(packet) / 2]
+		}
+	}
+
+	fmt.Println("Sum (incorrectly-ordered updates)", middleSum)
 }
 
 func main() {
@@ -95,4 +112,5 @@ func main() {
 	rules, packets := parseInput(string(file))
 
 	partOne(rules, packets)
+	partTwo(rules, packets)
 }
